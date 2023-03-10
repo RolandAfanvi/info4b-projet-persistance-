@@ -1,5 +1,9 @@
 package Projet;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.math.BigInteger;
 import java.net.Socket;
 import java.util.Hashtable;
@@ -11,6 +15,7 @@ import java.util.Hashtable;
 
 public class PersistanceNombre {
     public static void main(String[] args){
+        Serveur serveur = new Serveur(port : 8080); 
 
     }
 }
@@ -38,7 +43,7 @@ class Worker extends Thread{
 
     public void run()
     {
-        
+
     }
 
 
@@ -61,7 +66,23 @@ class Worker extends Thread{
         }
         return persistance;  
     }
+    //calcul moyenne des persistances
     double moyennePersistance = (double) TotalPersistance / nombre.length ; 
+
+    //calcul medianne des persistances
+    double medianePeristance = 
+
+    public getMoyenne(){
+
+    }
+
+    public getMediane(){
+
+    }
+
+    public getOccurrence(){
+
+    }
 }
 
 
@@ -73,15 +94,21 @@ class Worker extends Thread{
 
 class Client extends Thread{
     //Attributs 
-    private Serveur serveur;
-    static int port = 8080; 
+    private Socket socket; 
+    private BufferedReader sisr; 
+    private PrintWriter sisw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))); 
 
     //Constructeur
-    public Client(){
-
+    public Client(Socket socket){
+        this.socket = socket; 
+        this.sisr = new BufferedReader(new InputStreamReader(socket.getInputStream())); 
+        this.sisw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))); 
     }
 
-    public 
+    public void run()
+    {
+
+    }
 
 
 }
@@ -94,11 +121,43 @@ class Client extends Thread{
 class Serveur extends Thread{
     //Attributs
     private Hashtable workerDispo;
-    private int NbCourant ;
-    final static int port = 8080; 
+    final static int port; 
+    private ArrayList<Tache> taches; 
+    private Socket ClientDispo; 
+    private Hashtable<Integer, Integer> resultats; 
+    private Socket WorkerServeur; 
+    private int nombreTachesParWorkers; 
 
     //constructeur 
-    public Serveur(){
+    public Serveur(int port){
+        workerDispo = new Hashtable<Worker, Integer>(); 
+        this.port = port; 
+    }
+
+    public void ajouterWorker(String nom, int nbCoeur){
+        workerDispo.put(nom, nbCoeur); 
+        System.out.print("Le worker "+ nom +" est disponible avec "+nbCoeur+" coeurs"); 
+        repartirTaches();
+    }
+
+    public void enleveWorker(String nom){
+        workerDispo.remove(nom); 
+        System.out.print("Le worker "+nom+" n'est plus disponible."); 
+        repartirTaches();
+    }
+
+    public void ajouteTaches(int debut, int fin){
+        taches = new Taches(debut, fin); 
+        system.out.print("la tache [ "+debut+" , "+fin+" ] a été ajoutée"); 
+        repartirTaches();
+    }
+
+    public void repartirTaches(){
+
+    }
+
+    public void run()
+    {
 
     }
 
